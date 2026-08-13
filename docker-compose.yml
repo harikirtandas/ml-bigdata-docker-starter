@@ -1,0 +1,19 @@
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        UID: ${HOST_UID:-1000}
+        GID: ${HOST_GID:-1000}
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+    volumes:
+      - ./projects:/home/mluser/work/projects
+      - ./environments:/home/mluser/work/environments
+      - conda-envs:/opt/conda/envs
+      - jupyter-kernels:/home/mluser/.local/share/jupyter/kernels
+
+volumes:
+  conda-envs:
+  jupyter-kernels:
