@@ -38,4 +38,6 @@ echo "==> Registrando kernel para '$NAME'..."
 conda run -n "$NAME" python -m ipykernel install --user \
     --name "$NAME" --display-name "Python ($NAME)"
 
+write-pyright-config.sh "$NAME"
+
 echo "Entorno '$NAME' creado y registrado como kernel de Jupyter."

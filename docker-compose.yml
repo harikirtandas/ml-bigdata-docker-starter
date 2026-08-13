@@ -11,9 +11,13 @@ services:
     volumes:
       - ./projects:/home/mluser/work/projects
       - ./environments:/home/mluser/work/environments
-      - conda-envs:/opt/conda/envs
+      # Bind mount (no named volume): los entornos quedan visibles en el host
+      # para que un LSP como pyright/basedpyright (ej. LazyVim) pueda resolver
+      # imports leyendo site-packages directo del filesystem, sin ejecutar nada
+      # en el host. Mismo principio que el bind mount de vendor/ en los starters
+      # de Laravel para intelephense.
+      - ./environments-data:/opt/conda/envs
       - jupyter-kernels:/home/mluser/.local/share/jupyter/kernels
 
 volumes:
-  conda-envs:
   jupyter-kernels:

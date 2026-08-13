@@ -1,6 +1,7 @@
 COMPOSE = HOST_UID=$$(id -u) HOST_GID=$$(id -g) docker compose
 
 up:
+	@mkdir -p environments-data
 	$(COMPOSE) up -d --build
 	@echo "Jupyter Lab -> http://localhost:$${JUPYTER_PORT:-8888}"
 

@@ -22,16 +22,19 @@ RUN set -eux; \
     useradd -u "$UID" -g "$GROUP_NAME" -m mluser
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY scripts/new-env.sh scripts/remove-env.sh scripts/list-envs.sh /usr/local/bin/
+COPY scripts/new-env.sh scripts/remove-env.sh scripts/list-envs.sh scripts/write-pyright-config.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh \
              /usr/local/bin/new-env.sh \
              /usr/local/bin/remove-env.sh \
-             /usr/local/bin/list-envs.sh
+             /usr/local/bin/list-envs.sh \
+             /usr/local/bin/write-pyright-config.sh
 
-# Se crean (y se les da ownership) los directorios donde docker-compose va a
-# montar los named volumes. Docker copia el contenido y el ownership de estas
-# rutas al volumen la primera vez que se monta un volumen vacio sobre ellas, asi
-# que el contenedor no necesita arrancar como root para tener permisos correctos.
+# /opt/conda/envs es bind mount (docker-compose.yml), no named volume -- en Mac
+# Docker Desktop traduce el ownership del bind mount solo, y en Linux nativo el
+# `mkdir -p environments-data` del Makefile ya lo crea con el usuario del host.
+# jupyter-kernels SI es named volume: Docker copia el contenido y el ownership
+# de esta ruta al volumen la primera vez que se monta vacio, por eso hace falta
+# crearla y darle chown aca antes de USER mluser.
 RUN mkdir -p /opt/conda/envs \
              /home/mluser/.local/share/jupyter/kernels \
              /home/mluser/work/projects \

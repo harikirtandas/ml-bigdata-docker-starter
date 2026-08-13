@@ -1,0 +1,3 @@
+{
+  "extraPaths": ["../../environments-data/ejemplo-numpy-pandas/lib/python3.11/site-packages"]
+}

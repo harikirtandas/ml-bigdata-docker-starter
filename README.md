@@ -111,13 +111,33 @@ LazyVim es:
 3. Dentro de esa shell ya estás en el entorno conda correcto y podés correr
    `python archivo.py`, tests, linters, etc.
 
+### Autocompletado real (pyright/basedpyright) contra las librerías instaladas
+
+Cada vez que creás un entorno (`make new-env` o vía `environments/*.yml` al
+arrancar el contenedor), el repo genera automáticamente
+`projects/<nombre>/pyrightconfig.json` apuntando al `site-packages` real de ese
+entorno:
+```json
+{
+  "extraPaths": ["../../environments-data/<nombre>/lib/python3.11/site-packages"]
+}
+```
+Esto funciona porque `environments-data/` (donde viven los entornos conda) es un
+bind mount, no un named volume: los paquetes son archivos reales, visibles desde
+tu Mac. Un LSP en el host (pyright, que ya instala LazyVim con el extra de Python)
+puede **leer** esos archivos para resolver `import numpy`/`import pandas`/etc. y
+dar autocompletado y chequeo de tipos reales — sin ejecutar nada del entorno
+conda en el host. Mismo principio que usa `intelephense` leyendo `vendor/` en los
+starters de Laravel de este mismo autor.
+
+En la práctica: abrí con LazyVim cualquier archivo dentro de `projects/<nombre>/`
+(el nombre tiene que coincidir con el del entorno) y el LSP arranca solo, sin
+configuración manual.
+
 **Fuera de alcance de este repo (a configurar después, paso a paso):** una
-integración más fina —por ejemplo un plugin tipo `molten.nvim` o `jupytext` para
-ejecutar celdas de notebook directo desde Neovim, o configurar el LSP de Python
-(`pyright`/`basedpyright`) para que autocomplete resolviendo contra el intérprete
-del entorno conda dentro del contenedor— no está incluida acá. Es una configuración
-de tu Neovim/LazyVim local, no del repo, y se aborda en otra sesión una vez que
-este entorno esté funcionando.
+integración más fina para ejecutar celdas de notebook directo desde Neovim (ej.
+un plugin tipo `molten.nvim` o `jupytext`) no está incluida acá — es una
+configuración de tu Neovim/LazyVim local, no del repo.
 
 ## Listar y borrar entornos
 
@@ -149,10 +169,17 @@ make remove-env NAME=practico2
   ejemplo `JUPYTER_PORT=8890 make up`, y entrá por `http://localhost:8890`.
 - **Cambié el Dockerfile y no se aplica:** `make build` fuerza la reconstrucción de
   la imagen; después `make up` de nuevo.
-- **Quiero empezar de cero con los entornos:** `docker compose down -v` borra
-  también los volúmenes con nombre (`conda-envs`, `jupyter-kernels`), así que la
-  próxima vez que levantes el contenedor se recrean todos los entornos definidos en
-  `environments/*.yml` desde cero. Usalo con cuidado, es destructivo.
+- **Quiero empezar de cero con los entornos:** `rm -rf environments-data` borra
+  todos los entornos conda (es una carpeta del host, bind-mounteada, no un named
+  volume); `docker compose down -v` borra además el volumen con nombre de kernels
+  (`jupyter-kernels`). La próxima vez que levantes el contenedor se recrean todos
+  los entornos definidos en `environments/*.yml` desde cero. Usalo con cuidado,
+  es destructivo.
+- **`environments-data/`** es donde viven los entornos conda reales (bind mount,
+  no se versiona en git). Existe a propósito así en el host: permite que un LSP
+  como pyright/basedpyright (LazyVim) resuelva imports leyendo los paquetes
+  instalados directamente del filesystem, sin ejecutar nada en el host — ver
+  sección "Uso con LazyVim / Neovim" más arriba.
 
 ## Por qué está armado así
 

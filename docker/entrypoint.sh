@@ -23,6 +23,8 @@ for yml in "$ENV_DIR"/*.yml; do
     echo "==> Registrando kernel para '$env_name'..."
     conda run -n "$env_name" python -m ipykernel install --user \
         --name "$env_name" --display-name "Python ($env_name)"
+
+    write-pyright-config.sh "$env_name"
 done
 
 echo "==> Levantando Jupyter Lab en http://0.0.0.0:8888"

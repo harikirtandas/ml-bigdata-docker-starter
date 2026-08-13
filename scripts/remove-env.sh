@@ -10,7 +10,12 @@ if [ -z "$NAME" ]; then
 fi
 
 echo "==> Eliminando entorno conda '$NAME'..."
-conda env remove -n "$NAME" -y || echo "(el entorno conda ya no existia)"
+# rm -rf directo en vez de "conda env remove": el desinstalador de conda hace
+# un rename "seguro" archivo por archivo que falla sobre la capa de bind mount
+# de Docker Desktop en Mac (virtiofs). conda descubre los entornos escaneando
+# /opt/conda/envs, no necesita desregistro explicito -- borrar el directorio
+# alcanza.
+rm -rf "/opt/conda/envs/$NAME"
 
 echo "==> Eliminando kernel de Jupyter '$NAME'..."
 jupyter kernelspec remove -f "$NAME" || echo "(el kernel ya no existia)"
