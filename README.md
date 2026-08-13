@@ -67,7 +67,7 @@ Con el contenedor corriendo (`make up`), desde otra terminal:
 make new-env NAME=practico2 PACKAGES="pyspark matplotlib"
 ```
 
-Esto genera `environments/practico2.yml`, crea el entorno conda con Python 3.11 +
+Esto genera `environments/practico2.yml`, crea el entorno conda con Python 3.12 +
 `ipykernel` + los paquetes que pediste, y lo registra como kernel de Jupyter. No
 hace falta reconstruir la imagen ni reiniciar el contenedor — el kernel nuevo
 aparece disponible en Jupyter Lab en cuanto termina el comando (puede que tengas
@@ -134,7 +134,7 @@ arrancar el contenedor), el repo genera automáticamente
 entorno:
 ```json
 {
-  "extraPaths": ["../../environments-data/<nombre>/lib/python3.11/site-packages"]
+  "extraPaths": ["../../environments-data/<nombre>/lib/python3.12/site-packages"]
 }
 ```
 Esto funciona porque `environments-data/` (donde viven los entornos conda) es un

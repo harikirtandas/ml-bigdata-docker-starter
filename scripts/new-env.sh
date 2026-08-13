@@ -24,7 +24,7 @@ mkdir -p "$ENV_DIR"
     echo "  - conda-forge"
     echo "  - defaults"
     echo "dependencies:"
-    echo "  - python=3.11"
+    echo "  - python=3.12"
     echo "  - ipykernel"
     for pkg in $PACKAGES; do
         echo "  - $pkg"
