@@ -30,14 +30,20 @@ Este repo es una **plantilla de GitHub**. Creá tu propia copia a partir del
 template en vez de clonar el original directamente:
 
 ```bash
-gh repo create mi-cursada-mlbd --template harikirtandas/ml-bigdata-docker-starter --private --clone
-cd mi-cursada-mlbd
+gh repo create mi-proyecto --template TU_USUARIO/ml-bigdata-docker-starter --private --clone
+cd mi-proyecto
 make up
 ```
 
 Si preferís no usar `gh`, hacé click en **"Use this template" → "Create a new
-repository"** en la página de GitHub del starter, cloná ese repo nuevo, y corré
-`make up` igual.
+repository"** en la página de GitHub del starter, y después cloná tu copia
+nueva:
+
+```bash
+git clone <url-de-tu-copia> mi-proyecto
+cd mi-proyecto
+make up
+```
 
 La primera vez, `make up` construye la imagen (instala Jupyter Lab + ipykernel en
 el entorno base) y arranca el contenedor. Al iniciar, el contenedor recorre
