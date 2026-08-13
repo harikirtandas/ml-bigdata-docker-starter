@@ -13,7 +13,7 @@ por práctico o proyecto — sin mezclar dependencias entre ellos y sin tener qu
 reconstruir la imagen de Docker cada vez que agregás un proyecto nuevo o una
 librería. Los entornos persisten aunque apagues y prendas el contenedor.
 
-## Requisito único: Docker Desktop
+## Requisitos
 
 No hace falta instalar Python, Conda ni nada más. Solo:
 
@@ -21,14 +21,23 @@ No hace falta instalar Python, Conda ni nada más. Solo:
 - Mac con **Apple Silicon (M1/M2/M3/M4)** o **Intel**: no hay ninguna diferencia de
   uso — Docker Desktop maneja la arquitectura automáticamente al bajar
   `continuumio/miniconda3`. No necesitás hacer nada especial en ningún caso.
+- [GitHub CLI](https://cli.github.com/) (`gh`) si querés crear tu copia del repo
+  desde la terminal. Alternativa: usar el botón **"Use this template"** en GitHub.
 
 ## Levantar el repo por primera vez
 
+Este repo es una **plantilla de GitHub**. Creá tu propia copia a partir del
+template en vez de clonar el original directamente:
+
 ```bash
-git clone <url-del-repo> ml-bigdata-docker-starter
-cd ml-bigdata-docker-starter
+gh repo create mi-cursada-mlbd --template harikirtandas/ml-bigdata-docker-starter --private --clone
+cd mi-cursada-mlbd
 make up
 ```
+
+Si preferís no usar `gh`, hacé click en **"Use this template" → "Create a new
+repository"** en la página de GitHub del starter, cloná ese repo nuevo, y corré
+`make up` igual.
 
 La primera vez, `make up` construye la imagen (instala Jupyter Lab + ipykernel en
 el entorno base) y arranca el contenedor. Al iniciar, el contenedor recorre
