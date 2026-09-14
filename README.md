@@ -30,7 +30,7 @@ Este repo es una **plantilla de GitHub**. Creá tu propia copia a partir del
 template en vez de clonar el original directamente:
 
 ```bash
-gh repo create mi-proyecto --template TU_USUARIO/ml-bigdata-docker-starter --private --clone
+gh repo create mi-proyecto --template harikirtandas/ml-bigdata-docker-starter --private --clone
 cd mi-proyecto
 make up
 ```
